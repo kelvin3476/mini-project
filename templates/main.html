@@ -32,6 +32,12 @@
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
 
+  <style type="text/css">
+    .info-body {
+      display: none;
+      margin: 20px;
+    }
+  </style>
   <script>
     // 로딩 후 바로 실행
     $(document).ready(function () {
@@ -79,22 +85,41 @@
           let cards = response["userinfo"];
           console.log(cards);
           for (let i = 0; i < cards.length; i++) {
-            makeCard(cards[i]['name']);
+            toggleCard(i, cards[i]['name'], cards[i]['laptop_os'], cards[i]['laptop'], cards[i]['cellphone_os'], cards[i]['cellphone'], cards[i]['keyboard'], cards[i]['mouse']);
           }
         }
       })
     }
 
+    function toggle(i) {
+      if ($(`#first-${i}`).css("display") == "none") {
+        $(`#first-${i}`).show();
+        $(`#second-${i}`).hide();
 
-    function makeCard(name) {
+      }
+      else {
+        $(`#first-${i}`).hide();
+        $(`#second-${i}`).show();
+      }
+    }
+
+    function toggleCard(i, name, laptop_os, laptop, cellphone_os, cellphone, keyboard, mouse) {
       let tempHtml = `<div class="card">
-                        <div class="card-body">
+                        <div id="first-${i}" class="card-body">
                         <p class="card-text name">${name}</p>
-                        <button class="view-button btn btn-info">info</button>
                         </div>
+                        <div id="second-${i}" class="info-body">
+                          <p> 이름 : ${name} </p>
+                          <p> 노트북 os : ${laptop_os} </p>
+                          <p> 노트북 모델명 : ${laptop} </p>
+                          <p> 휴대폰 os : ${cellphone_os} </p>
+                          <p> 휴대폰 모델명 : ${cellphone} </p>
+                          <p> 키보드 : ${keyboard} </p>
+                          <p> 마우스 : ${mouse} </p>
+                        </div>
+                        <button class="view-button btn btn-info" onclick="toggle(${i})">info</button>
                     </div>`;
       $("#cards-box").append(tempHtml);
-
     }
 
     function nameSearch() {
@@ -112,7 +137,7 @@
           $("#cards-box").html("");
           for (let i = 0; i < cards.length; i++) {
             if (data == cards[i]['name']) {
-              makeCard(cards[i]['name']);
+              toggleCard(i, cards[i]['name'], cards[i]['laptop_os'], cards[i]['laptop'], cards[i]['cellphone_os'], cards[i]['cellphone'], cards[i]['keyboard'], cards[i]['mouse']);
               flag = true;
             }
           }

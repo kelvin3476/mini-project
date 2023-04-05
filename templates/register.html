@@ -15,7 +15,7 @@
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
   <!-- main.css -->
-  <link rel="stylesheet" type="text/css" href="static/login.css">
+  <link rel="stylesheet" type="text/css" href="static/register.css">
 
   <!-- JS -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -63,25 +63,29 @@
 
 <body>
   <div class="wrap">
-    <h1>회원가입 페이지</h1>
-    <div>
+    <div class="main-head">
+      <header class="navbar navbar-expand-lg navbar-dark bd-navbar sticky-top">
+        <a class="navbar-brand">정글인의 책상</a>
+      </header>
+    </div>
+    <div class="jumbotron">
       <div class="form-group">
         <label for="userid">ID</label>
-        <input type="text" class="form-control" id="userid" aria-describedby="emailHelp" placeholder="My ID">
+        <input type="text" class="form-control" id="userid" placeholder="My ID">
       </div>
       <div class="form-group">
         <label for="userpw">PW</label>
         <input type="password" class="form-control" id="userpw" placeholder="My Password">
       </div>
       <div class="form-group">
-        <label for="username">NAME</label>
+        <label for="userpw">NAME</label>
         <input type="text" class="form-control" id="username" placeholder=" My Name">
       </div>
       <div class="form-group">
-        <label for="usernick">NICKNAME</label>
+        <label for="userpw">NICKNAME</label>
         <input type="text" class="form-control" id="usernick" placeholder="My Nickname">
       </div>
-      <button class="btn btn-primary" onclick="register()">회원가입</button>
+      <button class="regi-button" onclick="register()">회원가입</button>
     </div>
   </div>
 </body>

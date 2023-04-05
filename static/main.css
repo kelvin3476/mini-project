@@ -1,76 +1,147 @@
+* { 
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
 .main-head {
-    background-color: #1E90FF;
-    color: white;
+    background-color: yellowgreen;
+    color: black;
     height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
-    }
-    
-    .navbar-brand {
+}
+
+.navbar-brand {
     font-size: 2em;
     font-weight: bold;
-    }
-    
-    .wrap {
-    max-width: 1200px;
+}
+
+body {
+    background-image: url("/static/images/jungle.jpg");
+    background-size: cover;
+    height: 100%;
+    min-height: 100vh;
+}
+
+.wrap {
     margin: 0 auto;
-    padding: 50px 20px;
-    }
-    
-    .search-bar {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-    }
-    
-    input[type="text"] {
+    width: 1300px;
+    height: 100%;
+}
+
+.jumbotron {
+    padding: 30px;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+input[type="text"] {
+    background-color: black;
+    color: white;
     padding: 10px;
     font-size: 1.2em;
     border-radius: 5px;
     border: none;
     margin-right: 10px;
+    margin-left: 15px;
     width: 500px;
-    }
-    
-    button {
+}
+
+button[type=button] {
     padding: 10px 20px;
     font-size: 1.2em;
+    font-weight: normal;
     border-radius: 5px;
     border: none;
-    background-color: #1E90FF;
-    color: white;
-    }
-    
-    .row {
+    background-color: yellowgreen;
+    color: black;
+}
+
+.row {
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
-    }
-    
-    .card-columns {
-    column-count: 3;
-    column-gap: 30px;
-    }
-    
-    .card {
+}
+
+.card-columns {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:initial;
+    column-count: 5;
+    column-gap: 20px;
+}
+
+.card {
     background-color: white;
     border-radius: 5px;
-    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3);
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
     margin-bottom: 20px;
-    }
-    
-    .card-body {
+   
+}
+
+.card-body {
     padding: 20px;
-    }
-    
-    .card-text.name {
+}
+
+.card-text.name {
     font-size: 1.5em;
     font-weight: bold;
     margin-bottom: 10px;
-    }
-    
-    .card-text.nick {
+}
+
+.card-text.nick {
     font-size: 1.2em;
     color: #666;
-    }
+}
+
+.man-cards {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+  }
+  
+  .man-card {
+    position: relative;
+    display: inline-block;
+    width: 30%;
+    border: 2px solid yellowgreen;
+    border-radius: 20px;
+  }
+  
+  .card-img {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+  }
+  
+  .card-info {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    display: flex;
+    padding-left: 30px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    text-align: left;
+  }
+  
+  .man-card:hover .card-info {
+    opacity: 1;
+  }
+
+  .row{
+    display: flex;
+    flex-wrap: wrap;
+  }

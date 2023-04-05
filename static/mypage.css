@@ -1,0 +1,59 @@
+.main-head {
+    background-color: yellowgreen;
+    color: black;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navbar-brand {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+body {
+    background-image: url("/static/images/jungle.jpg");
+    background-size: cover;
+}
+
+.wrap {
+    margin: 0 auto;
+    width: 600px;
+}
+.jumbotron {
+    padding: 30px;
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+.card {
+    background-color: black, 0.2;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.card-body {
+    width: 1500px;
+    display: flex;
+    flex-direction: column;
+}
+
+input[type="radio"],
+input[type="text"] {
+    margin-right: 5px;
+}
+
+.form-control {
+    display: inline-block;
+    width: 200px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin: 5px 0;
+}
+.cards-box{
+    width:1300px
+}

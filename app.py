@@ -3,6 +3,7 @@ import datetime
 import jwt
 from pymongo import MongoClient
 from bson.objectid import ObjectId
+import matplotlib.pyplot as plt
 from flask import Flask, render_template, jsonify, request, session, redirect, url_for
 app = Flask(__name__)
 
@@ -209,6 +210,38 @@ def update_info():
       db.user.update_one({'id': id_receive },{'$set':{'laptop_os': laptop_os_receive, 'laptop': laptop_receive, 'cellphone_os': cellphone_os_receive, 'cellphone': cellphone_receive, 'keyboard': keyboard_receive, 'mouse': mouse_receive}})
       return jsonify({'result':'success'})
    return jsonify({'result':'fail', 'msg': '실패!'})
+
+@app.route('/osPercentage', methods=['GET'])
+def os_percentage():
+    # Retrieve data from MongoDB
+    users = db.user.find({})
+    laptop_os_counts = {
+        'WINDOW': 0,
+        'MAC': 0,
+        'others': 0
+    }
+    cellphone_os_counts = {
+        'android': 0,
+        'ios': 0,
+        'others': 0
+    }
+    for user in users:
+        laptop_os = user['laptop_os']
+        cellphone_os = user['cellphone_os']
+        laptop_os_counts[laptop_os] += 1
+        cellphone_os_counts[cellphone_os] += 1
+    
+    # Calculate percentages
+    Ltotal = sum(laptop_os_counts.values())
+    Ctotal = sum(cellphone_os_counts.values())
+    Lpercentages = {}
+    Cpercentages = {}
+    for os, count in laptop_os_counts.items():
+        Lpercentages[os] = count / Ltotal * 100
+    for os, count in cellphone_os_counts.items():
+        Cpercentages[os] = count / Ctotal * 100
+        
+    return jsonify({'result': 'success','laptop_val':Lpercentages, 'cellphone_val':Cpercentages})
 
 if __name__ == '__main__':
    app.run('0.0.0.0',port=5000,debug=True)

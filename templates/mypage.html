@@ -13,6 +13,12 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- main.css -->
+    <link rel="stylesheet" type="text/css" href="static/mypage.css">
+    <!-- Google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
 
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -67,35 +73,35 @@
         }
 
         function makeCard(id, nick, name, laptopOS, laptop, cellphoneOS, cellphone, keyboard, mouse) {
-            let tempHtml = `<div class="card">
+            let tempHtml = `<div class="card" style="background-color: black;">
                               <div class="card-body">
-                                <p> 아이디 : ${id}</p>
-                                <p> 이름 : ${name}</p>
-                                <p> 닉네임 :${nick}</p>
-                              <div id="laptop_os">노트북 OS : 
+                                <p style="color: yellowgreen;"> 아이디 : ${id}</p>
+                                <p style="color: yellowgreen;"> 이름 : ${name}</p>
+                                <p style="color: yellowgreen;"> 닉네임 :${nick}</p>
+                              <div style="color: yellowgreen;" id="laptop_os">노트북 OS : 
                                 <input type="radio" name="laptopOS" value="MAC"> MAC
                                 <input type="radio" name="laptopOS" value="WINDOW"> WINDOW
                                 <input type="radio" name="laptopOS" value="others"> others
                               </div>
-                                <p> 노트북 모델명 : 
+                                <p style="color: yellowgreen;"> 노트북 모델명 : 
                                     <input id="laptop" class"form-control" value="${laptop}" >
                                 </p>
-                                <div id="cellphone_os">휴대폰 OS : 
+                                <div style="color: yellowgreen;" id="cellphone_os">휴대폰 OS : 
                                     <input type="radio" name="cellphoneOS" value="ios"> ios
                                     <input type="radio" name="cellphoneOS" value="android"> android
                                     <input type="radio" name="cellphoneOS" value="others"> others
                                 </div>
-                                <p> 휴대폰 모델명 : 
+                                <p style="color: yellowgreen;"> 휴대폰 모델명 : 
                                     <input id="cellphone" class"form-control" value="${cellphone}">
                                 </p>
-                                <p> 키보드 모델명 : 
+                                <p style="color: yellowgreen;"> 키보드 모델명 : 
                                     <input id="keyboard" class"form-control" value="${keyboard}">
                                 </p>
-                                <p> 마우스 모델명 : 
+                                <p style="color: yellowgreen;"> 마우스 모델명 : 
                                     <input id="mouse" class"form-control" value="${mouse}">
                                 </p>
                               </div>
-                              <button class="btn btn-primary" onclick="get_id()">확인</button>
+                              <button style="background-color: yellowgreen; color: black; border: 2px gray;" class="btn btn-primary" onclick="get_id()">확인</button>
                           </div>`;
             $("#cards-box").append(tempHtml);
 
@@ -141,8 +147,17 @@
 </head>
 
 <body>
-    <h1>my page</h1>
-    <div id="cards-box">
+    <div class="wrap">
+        <div class="main-head">
+            <header class="navbar navbar-expand-lg navbar-dark bd-navbar sticky-top">
+                <a class="navbar-brand">정글인의 책상</a>
+            </header>
+        </div>
+        <div class="jumbotron">
+            <span style="color: yellowgreen; font-size: 52px; padding-left: 70px;">마이페이지</span>
+            <div id="cards-box">
+            </div>
+        </div>
     </div>
 </body>
 

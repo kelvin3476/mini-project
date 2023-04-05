@@ -32,6 +32,15 @@
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
 
+  <!-- chart js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+
+  <style type="text/css">
+    .info-body {
+      display: none;
+      margin: 20px;
+    }
+  </style>
   <script>
     // 로딩 후 바로 실행
     $(document).ready(function () {
@@ -79,22 +88,41 @@
           let cards = response["userinfo"];
           console.log(cards);
           for (let i = 0; i < cards.length; i++) {
-            makeCard(cards[i]['name']);
+            toggleCard(i, cards[i]['name'], cards[i]['laptop_os'], cards[i]['laptop'], cards[i]['cellphone_os'], cards[i]['cellphone'], cards[i]['keyboard'], cards[i]['mouse']);
           }
         }
       })
     }
 
+    function toggle(i) {
+      if ($(`#first-${i}`).css("display") == "none") {
+        $(`#first-${i}`).show();
+        $(`#second-${i}`).hide();
 
-    function makeCard(name) {
-      let tempHtml = `<div class="card">
-                        <div class="card-body">
+      }
+      else {
+        $(`#first-${i}`).hide();
+        $(`#second-${i}`).show();
+      }
+    }
+
+    function toggleCard(i, name, laptop_os, laptop, cellphone_os, cellphone, keyboard, mouse) {
+      let tempHtml = `<div class="card" style="display: flex; align-items: center; justify-content: center; background-color: black; width:295px; border-radius: 25px; color: yellowgreen;">
+                        <div id="first-${i}" class="card-body">
                         <p class="card-text name">${name}</p>
-                        <button class="view-button btn btn-info">info</button>
                         </div>
+                        <div id="second-${i}" class="info-body">
+                          <p> 🧭이름 : ${name} </p>
+                          <p> 🖥️노트북 OS : ${laptop_os} </p>
+                          <p> 💻노트북 제품명 : ${laptop} </p>
+                          <p> 🤖휴대폰 OS : ${cellphone_os} </p>
+                          <p> 📱휴대폰 제품명 : ${cellphone} </p>
+                          <p> ⌨️키보드 : ${keyboard} </p>
+                          <p> 🖱️마우스 : ${mouse} </p>
+                        </div>
+                        <button class="view-button btn btn-info" style="background-color: black; border-radius: 5px; color: yellowgreen;" onclick="toggle(${i})">info</button>
                     </div>`;
       $("#cards-box").append(tempHtml);
-
     }
 
     function nameSearch() {
@@ -112,7 +140,7 @@
           $("#cards-box").html("");
           for (let i = 0; i < cards.length; i++) {
             if (data == cards[i]['name']) {
-              makeCard(cards[i]['name']);
+              toggleCard(i, cards[i]['name'], cards[i]['laptop_os'], cards[i]['laptop'], cards[i]['cellphone_os'], cards[i]['cellphone'], cards[i]['keyboard'], cards[i]['mouse']);
               flag = true;
             }
           }
@@ -141,34 +169,175 @@
       window.location.href = '/login'
     }
 
+    function graph() {
+      $.ajax({
+        type: "GET",
+        url: "/osPercentage",
+        data: {},
+        success: function (response) {
+          if (response['result'] == 'success') {
+            console.log(response['laptop_val'])
+            makeGraph(response['laptop_val'], response['cellphone_val'])
+          }
+        }
+      })
+    }
+
+    function makeGraph(laptop_val, cellphone_val) {
+      ctx = document.getElementById('myChart').getContext('2d');
+      ctx2 = document.getElementById('myChart2').getContext('2d');
+      myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['MAC', 'WINDOW', 'others'],
+          datasets: [{
+            label: '노트북 OS 사용 현황',
+            data: laptop_val,
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: false,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+      myChart2 = new Chart(ctx2, {
+        type: 'bar',
+        data: {
+          labels: ['ios', 'android', 'others'],
+          datasets: [{
+            label: '휴대폰 OS 사용 현황',
+            data: cellphone_val,
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: false,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
   </script>
 
 </head>
 
 <body>
-  <div class="main-head">
-    <header class="navbar navbar-expand-lg navbar-dark bd-navbar sticky-top">
-      <a class="navbar-brand">PUMG</a>
-    </header>
-  </div>
+
   <div class="wrap">
-    <div class="row row-cols-1 row-cols-md-5 g-4">
-      <input type="text" placeholder="풀네임을 입력해주세요" id="search_data">
-      <button onclick="nameSearch()">검색</button>
-      <div class="col">
-        <button onclick="my_info()" id="button" type="button">마이 페이지</button>
-      </div>
-      <button type="button" class="btn btn-danger" onclick="logout()">로그아웃하기</button>
+    <div class="main-head">
+      <header class="navbar navbar-expand-lg navbar-dark bd-navbar sticky-top">
+        <a class="navbar-brand">정글인의 책상</a>
+      </header>
     </div>
-    <div id="cards-box" class="card-columns">
-      <div class="card">
-        <div class="card-body">
-          <p class="card-text name">name</p>
-          <button class="view-button btn btn-info">info</button>
+    <div class="jumbotron">
+      <div class="explain">
+        <p><span style="font-size: 72px; color: rgba(154, 205, 50, 0.5);">한국인에게 밥상이 있다면</span></p>
+        <p style="text-align: center;"><span style="font-size: 80px; color: rgba(180, 247, 47, 0.8);">정글인에겐 책상이
+            있다</span></p>
+      </div>
+      <!-- 코치진 아이템 -->
+      <!-- 김정한 원장님 -->
+      <div class="man-cards">
+        <div class="man-card">
+          <img src="/static/images/man1.jpg" alt="Image" class="card-img">
+          <div class="card-info">
+            <h1>김정한 원장</h>
+              <h2>SECRET</h2>
+          </div>
+        </div>
+        <!-- 김현수 수석코치님 -->
+        <div class="man-card">
+          <img src="/static/images/man2.jpg" alt="Image" class="card-img">
+          <div class="card-info">
+            <h1>김현수 수석코치</h>
+              <p><span style="font-size: 32px;">Laptop:</span>
+                <span style="font-size: 20px;">MacBookPro</span>
+              </p>
+              <p><span style="font-size: 32px;">Phone:</span>
+                <span style="font-size: 20px;">iPhone 12</span>
+              </p>
+              <p><span style="font-size: 32px;">Keyboard:</span>
+                <span style="font-size: 20px;">None</span>
+              </p>
+              <p><span style="font-size: 32px;">Mouse:</span>
+                <span style="font-size: 20px;">Logitec</span>
+              </p>
+          </div>
+        </div>
+        <!-- 백승현 코치님 -->
+        <div class="man-card">
+          <img src="/static/images/man3.jpg" alt="Image" class="card-img">
+          <div class="card-info">
+            <h1 style="color: white; border: 1px yellowgreen;">백승현 코치</h>
+              <p><span style="font-size: 32px;">Laptop:</span>
+                <span style="font-size: 20px;">MacBookPro M1 16gb</span>
+              </p>
+              <p><span style="font-size: 32px;">Phone:</span>
+                <span style="font-size: 20px;">Galaxy S21</span>
+              </p>
+              <p><span style="font-size: 32px;">Keyboard:</span>
+                <span style="font-size: 20px;">None</span>
+              </p>
+              <p><span style="font-size: 32px;">Mouse:</span>
+                <span style="font-size: 20px;">Logitec G102IC</span>
+              </p>
+          </div>
+        </div>
+
+      </div>
+      <!-- 검색창, 카드박스 -->
+      <div class="row row-cols-1 row-cols-md-8 g-8">
+        <input type="text" placeholder="풀네임을 입력해주세요" id="search_data">
+        <button type="button" onclick="nameSearch()">검색</button>
+        <div class="col">
+          <button onclick="my_info()" id="button" type="button">마이 페이지</button>
+        </div>
+        <button type="button" style="margin-right: 20px" class="btn btn-danger" onclick="logout()">로그아웃하기</button>
+        <button type="button" class="view-button btn btn-info" style="margin-right: 20px;" onclick="graph()">차트 보기</button>
+      </div>
+      <canvas id="myChart" width="1200" height="300"></canvas>
+      <canvas id="myChart2" width="1200" height="300"></canvas>
+      <div id="cards-box" class="card-columns">
+        <div class="card">
+          <div class="card-body">
+            <p class="card-text name">name</p>
+            <button class="view-button btn btn-info">info</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </body>
+
 
 </html>

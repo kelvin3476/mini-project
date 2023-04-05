@@ -1,0 +1,76 @@
+.main-head {
+    background-color: #1E90FF;
+    color: white;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    }
+    
+    .navbar-brand {
+    font-size: 2em;
+    font-weight: bold;
+    }
+    
+    .wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 50px 20px;
+    }
+    
+    .search-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    }
+    
+    input[type="text"] {
+    padding: 10px;
+    font-size: 1.2em;
+    border-radius: 5px;
+    border: none;
+    margin-right: 10px;
+    width: 500px;
+    }
+    
+    button {
+    padding: 10px 20px;
+    font-size: 1.2em;
+    border-radius: 5px;
+    border: none;
+    background-color: #1E90FF;
+    color: white;
+    }
+    
+    .row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    }
+    
+    .card-columns {
+    column-count: 3;
+    column-gap: 30px;
+    }
+    
+    .card {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3);
+    margin-bottom: 20px;
+    }
+    
+    .card-body {
+    padding: 20px;
+    }
+    
+    .card-text.name {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    }
+    
+    .card-text.nick {
+    font-size: 1.2em;
+    color: #666;
+    }

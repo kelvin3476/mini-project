@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+  <!-- Webpage Title -->
+  <title>PUMG</title>
+
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <!-- main.css -->
+  <link rel="stylesheet" type="text/css" href="static/main.css">
+  <!-- Google font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+
+  <!-- JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+  <script>
+    // 로딩 후 바로 실행
+    $(document).ready(function () {
+      if ($.cookie('mytoken') == undefined) {
+        // mytoken이라는 값으로 쿠키가 없으면, 로그인 창으로 이동시킵니다.
+        alert('먼저 로그인을 해주세요')
+        window.location.href = '/login'
+      } else {
+        // 쿠기가 있으면, 유저 정보를 불러옵니다.
+        load_user_info()
+      }
+    });
+
+    // 쿠키에 가지고 있는 token을 헤더에 담아서 보냅니다.
+    function load_user_info() {
+      $.ajax({
+        type: "GET",
+        url: "/api/nick",
+        headers: { 'token_give': $.cookie('mytoken') },
+        data: {},
+        success: function (response) {
+          if (response['result'] == 'success') {
+            // 올바른 결과값을 받으면 nickname을 입력해줍니다.
+            $('#nickname').text(response['nickname'])
+          } else {
+            // 에러가 나면 메시지를 띄우고 로그인 창으로 이동합니다.
+            alert(response['msg'])
+            window.location.href = '/login'
+          }
+        }
+      })
+    }
+
+    $(document).ready(function () {
+      $("#cards-box").html("");
+      showCard();
+    });
+
+    function showCard() {
+      $.ajax({
+        type: "GET",
+        url: "/api/main",
+        data: {},
+        success: function (response) {
+          let cards = response["userinfo"];
+          console.log(cards);
+          for (let i = 0; i < cards.length; i++) {
+            makeCard(cards[i]['name']);
+          }
+        }
+      })
+    }
+
+
+    function makeCard(name) {
+      let tempHtml = `<div class="card">
+                        <div class="card-body">
+                        <p class="card-text name">${name}</p>
+                        <button class="view-button btn btn-info">info</button>
+                        </div>
+                    </div>`;
+      $("#cards-box").append(tempHtml);
+
+    }
+
+    function nameSearch() {
+
+      let data = $('#search_data').val();
+      let flag = false;
+
+      $.ajax({
+        type: "GET",
+        url: "/api/search",
+        data: {},
+        success: function (response) {
+          let cards = response["userinfo"];
+          console.log(cards);
+          $("#cards-box").html("");
+          for (let i = 0; i < cards.length; i++) {
+            if (data == cards[i]['name']) {
+              makeCard(cards[i]['name']);
+              flag = true;
+            }
+          }
+          if (flag == false) {
+            alert('해당 이름이 존재하지 않습니다.')
+            showCard();
+          }
+        }
+      })
+    }
+
+    function my_info() {
+      $.ajax({
+        type: "GET",
+        data: { 'name_give': name },
+        success: function my_info() {
+          window.location.href = ('/mypage');
+        }
+      })
+    }
+
+    // 로그아웃은 내가 가지고 있는 토큰만 쿠키에서 없애면 됩니다.
+    function logout() {
+      $.removeCookie('mytoken');
+      alert('로그아웃!')
+      window.location.href = '/login'
+    }
+
+  </script>
+
+</head>
+
+<body>
+  <div class="main-head">
+    <header class="navbar navbar-expand-lg navbar-dark bd-navbar sticky-top">
+      <a class="navbar-brand">PUMG</a>
+    </header>
+  </div>
+  <div class="wrap">
+    <div class="row row-cols-1 row-cols-md-5 g-4">
+      <input type="text" placeholder="풀네임을 입력해주세요" id="search_data">
+      <button onclick="nameSearch()">검색</button>
+      <div class="col">
+        <button onclick="my_info()" id="button" type="button">마이 페이지</button>
+      </div>
+      <button type="button" class="btn btn-danger" onclick="logout()">로그아웃하기</button>
+    </div>
+    <div id="cards-box" class="card-columns">
+      <div class="card">
+        <div class="card-body">
+          <p class="card-text name">name</p>
+          <button class="view-button btn btn-info">info</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

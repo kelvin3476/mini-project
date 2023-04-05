@@ -1,0 +1,81 @@
+.main-head {
+    background-color: yellowgreen;
+    color: black;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  body {
+    background-image: url("../static/images/jungle.jpg");
+    color: yellowgreen;
+    
+    background-size: cover;
+  }
+  
+  .navbar-brand {
+      font-size: 2em;
+      font-weight: bold;
+  }
+  
+  
+  .wrap {
+    margin: 0 auto;
+    width: 400px;
+  }
+  
+  .mytitle {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+  
+  .mytitle h1 {
+    font-size: 48px;
+    margin: 0;
+  }
+  
+  .jumbotron {
+    padding: 30px;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 16px;
+  }
+  
+  input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+  }
+  
+  .login-button {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    border: none;
+    background-color: yellowgreen;
+    color: black;
+    cursor: pointer;
+  }
+  
+  .register {
+    display: block;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: yellowgreen;
+    text-decoration: none;
+  }

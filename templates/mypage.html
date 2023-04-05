@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <!-- Webpage Title -->
+    <title>마이 페이지</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script>
+
+        $(document).ready(function () {
+            load_my_info()
+        });
+
+        function load_my_info() {
+            $.ajax({
+                type: "GET",
+                url: "/api/mypage",
+                headers: { 'token_give': $.cookie('mytoken') },
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        // 올바른 결과값을 받으면 nickname을 입력해줍니다.
+                        $("#cards-box").html("");
+                        makeCard(response['userinfo']['id'], response['userinfo']['nick'], response['userinfo']['name'], response['userinfo']['laptop_os'], response['userinfo']['laptop'], response['userinfo']['cellphone_os'], response['userinfo']['cellphone'], response['userinfo']['keyboard'], response['userinfo']['mouse'])
+                    } else {
+                        // 에러가 나면 메시지를 띄우고 로그인 창으로 이동합니다.
+                        alert(response['msg'])
+                    }
+                }
+            })
+        }
+
+        function get_id() {
+            $.ajax({
+                type: "GET",
+                url: "/api/update",
+                headers: { 'token_give': $.cookie('mytoken') },
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        update_info(response['id'])
+                    } else {
+                        // 에러가 나면 메시지를 띄우고 로그인 창으로 이동합니다.
+                        alert(response['msg'])
+                    }
+                }
+            })
+        }
+
+        function makeCard(id, nick, name, laptopOS, laptop, cellphoneOS, cellphone, keyboard, mouse) {
+            let tempHtml = `<div class="card">
+                              <div class="card-body">
+                                <p> 아이디 : ${id}</p>
+                                <p> 이름 : ${name}</p>
+                                <p> 닉네임 :${nick}</p>
+                              <div id="laptop_os">노트북 OS : 
+                                <input type="radio" name="laptopOS" value="MAC"> MAC
+                                <input type="radio" name="laptopOS" value="WINDOW"> WINDOW
+                                <input type="radio" name="laptopOS" value="others"> others
+                              </div>
+                                <p> 노트북 모델명 : 
+                                    <input id="laptop" class"form-control" value="${laptop}" >
+                                </p>
+                                <div id="cellphone_os">휴대폰 OS : 
+                                    <input type="radio" name="cellphoneOS" value="ios"> ios
+                                    <input type="radio" name="cellphoneOS" value="android"> android
+                                    <input type="radio" name="cellphoneOS" value="others"> others
+                                </div>
+                                <p> 휴대폰 모델명 : 
+                                    <input id="cellphone" class"form-control" value="${cellphone}">
+                                </p>
+                                <p> 키보드 모델명 : 
+                                    <input id="keyboard" class"form-control" value="${keyboard}">
+                                </p>
+                                <p> 마우스 모델명 : 
+                                    <input id="mouse" class"form-control" value="${mouse}">
+                                </p>
+                              </div>
+                              <button class="btn btn-primary" onclick="get_id()">확인</button>
+                          </div>`;
+            $("#cards-box").append(tempHtml);
+
+            if (laptopOS == "MAC") {
+                $(":radio[name='laptopOS'][value='MAC']").attr('checked', true);
+            }
+            else if (laptopOS == "WINDOW") {
+                $(":radio[name='laptopOS'][value='WINDOW']").attr('checked', true);
+            }
+            else if (laptopOS == "others") {
+                $(":radio[name='laptopOS'][value='others']").attr('checked', true);
+            }
+
+            if (cellphoneOS == "ios") {
+                $(":radio[name='cellphoneOS'][value='ios']").attr('checked', true);
+            }
+            else if (cellphoneOS == "android") {
+                $(":radio[name='cellphoneOS'][value='android']").attr('checked', true);
+            }
+            else if (cellphoneOS == "others") {
+                $(":radio[name='cellphoneOS'][value='others']").attr('checked', true);
+            }
+
+        }
+        function update_info(id) {
+            $.ajax({
+                type: "POST",
+                url: "/api/update",
+                data: { id_give: id, laptop_os_give: $('input[name=laptopOS]:checked').val(), laptop_give: $('#laptop').val(), cellphone_os_give: $('input[name=cellphoneOS]:checked').val(), cellphone_give: $('#cellphone').val(), keyboard_give: $('#keyboard').val(), mouse_give: $('#mouse').val() },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        console.log(id)
+                        alert('정보 수정 완료!')
+                        window.location.href = '/'
+                    } else {
+                        alert(response['msg'])
+                    }
+                }
+            })
+        }
+
+    </script>
+</head>
+
+<body>
+    <h1>my page</h1>
+    <div id="cards-box">
+    </div>
+</body>
+
+</html>

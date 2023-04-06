@@ -3,11 +3,10 @@ import datetime
 import jwt
 from pymongo import MongoClient
 from bson.objectid import ObjectId
-import matplotlib.pyplot as plt
 from flask import Flask, render_template, jsonify, request, session, redirect, url_for
 app = Flask(__name__)
 
-client = MongoClient('localhost', 27017)
+client = MongoClient('mongodb://test:test@54.180.108.207', 27017)
 db = client.dbPUMG
 
 # JWT 토큰을 만들 때 필요한 비밀문자열입니다. 아무거나 입력해도 괜찮습니다.
